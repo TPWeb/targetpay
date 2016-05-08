@@ -1,0 +1,24 @@
+{
+  "name": "tpweb/targetpay",
+  "version": "1.0.0",
+  "description": "PHP TargetPay Library",
+  "keywords": ["targetpay", "payments", "IVR"],
+  "homepage": "http://www.tpweb.org/my-projects/php-targetpay/",
+  "type": "library",
+  "license": "LGPL",
+  "authors": [
+    {
+      "name": "Tjebbe Lievens - Made I.T.",
+      "homepage": "http://www.tpweb.org",
+      "email": "tjebbe.lievens@madeit.be"
+    }
+  ],
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-0": {
+      "TPWeb\\TargetPay\\": "src/"
+    }
+  }
+}
