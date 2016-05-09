@@ -483,6 +483,64 @@ class TargetPay
             } else {
                 throw new TargetPayException("Can't load payment info, wrong parameters.", 4);
             }	
+        } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\IDeal) {
+            $url = 'https://www.targetpay.com/ideal/start?' .
+                            'rtlo='. urlencode($this->layoutcode) .
+                            '&bank='.urlencode($this->transaction->getBank()) .
+                            '&description=' . urlencode($this->transaction->getDescription()) .
+                            '&amount='.urlencode($this->getAmount() * 100) .
+                            '&returnurl=' . urlencode($this->transaction->getReturnUrl()) .
+                            '&cancelurl=' . urlencode($this->transaction->getCancelUrl()) .
+                            '&reporturl=' . urlencode($this->transaction->getReportUrl()) .
+                            '&test=' . ($this->test ? 1 : 0) .
+                            '&v=3';
+            $result = $this->getResponse($url);
+            if($this->debug) {
+                Log::info('TargetPay URL:' . $url);
+                Log::info('TargetPay Response:' . $result);
+            }
+            if (!$result) {
+                throw new TargetPayException("Can't load payment info", 3);
+            }
+
+            $data = explode('|', $result);
+            $resCode = substr($data[0], 0, 6);
+            if($resCode == "000000") {
+                $this->transaction->setIdealUrl($data[1]);
+                $this->transaction->setTransactionId(substr($data[0], 7));
+            } else if($resCode == "TP0001") {
+                throw new TargetPayException("No layoutcode. Geen layoutcode opgegeven", 4);
+            } else if($resCode == "TP0002") {
+                throw new TargetPayException("Amount too low. Bedrag te laag (minimaal 0,84 euro)", 4);
+            } else if($resCode == "TP0003") {
+                throw new TargetPayException("Amount too high. Bedrag te hoog (maximaal 10.000 euro)", 4);
+            } else if($resCode == "TP0004") {
+                throw new TargetPayException("No or invalid return URL. Geen of ongeldige return URL meegegeven", 4);
+            } else if($resCode == "TP0005") {
+                throw new TargetPayException("No bank ID. Geen bank ID meegegeven", 4);
+            } else if($resCode == "TP0006") {
+                throw new TargetPayException("No description. Geen omschrijving meegegeven", 4);
+            } else if($resCode == "TP0016") {
+                throw new TargetPayException("No iDEAL approval for this account yet. Het account is nog niet goedgekeurd voor iDeal", 4);
+            } else if($resCode == "TP0017") {
+                throw new TargetPayException("Incorrect rtlo code. De layoutcode (rtlo) is onjuist of bestaat niet", 4);
+            } else if($resCode == "TP0019") {
+                throw new TargetPayException("Account disabled. Het account staat op uitgeschakeld", 4);
+            } else if($resCode == "TP9997") {
+                throw new TargetPayException("Internal error, failed to create transaction. BANK is performing maintenance.", 4);
+            } else if($resCode == "TP9998") {
+                throw new TargetPayException("Failed to create transaction. De bank geeft geen transactienummer terug.", 4);
+            } else if($resCode == "TP9999") {
+                throw new TargetPayException("Internal error, failed to create transaction. BANK is performing maintenance. Your account has been blocked. Account geblokkeerd wegens vermeend misbruik.", 4);
+            } else if($resCode == "SO1000") {
+                throw new TargetPayException("Storing in systeem", 4);
+            } else if($resCode == "SO1200") {
+                throw new TargetPayException("Systeem te druk. Probeer later nogmaals", 4);
+            } else if($resCode == "SO1400") {
+                throw new TargetPayException("Onbeschikbaar door onderhoudswerkzaamheden", 4);
+            } else {
+                throw new TargetPayException("Can't load payment info, wrong parameters.", 4);
+            }	
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }
@@ -492,7 +550,7 @@ class TargetPay
      * check if payment is done.
      * @throws TransactionTypeException
      */
-    public function checkPaymentInfo()
+    public function checkPaymentInfo($once = false)
     {
         if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
             $url = 'http://api.targetpay.nl/payment/checkpayment.asp?' .
@@ -520,6 +578,43 @@ class TargetPay
             } else {
                 $this->setPaymentDone(false);
             }	
+        } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\IDeal) {
+            $url = 'https://www.targetpay.com/ideal/check?' .
+                                    'rtlo='. urlencode($this->layoutcode) .
+                                    '&trxid='.urlencode($this->transaction->getTransactionId()) .
+                                    '&once=' . urlencode($once ? "1" : 0);
+            $result = $this->getResponse($url);
+            if($this->debug) {
+                Log::info('TargetPay URL:' . $url);
+                Log::info('TargetPay Response:' . $result);
+            }
+            if (!$result) {
+                throw new TargetPayException("Can't load payment info", 3);
+            }
+            $resCode = substr($result, 0, 6);
+            if($resCode == "000000") {
+                $this->setPaymentDone(true);
+            } else if($resCode == "TP0010") {
+                throw new TargetPayException("Transaction has not been completed, try again later.", 4);
+            } else if($resCode == "TP0011") {
+                throw new TargetPayException("Transaction has been cancelled Transactie is geannuleerd", 4);
+            } else if($resCode == "TP0012") {
+                throw new TargetPayException("Transaction has expired Transactie is verlopen (max. 10 minuten)", 4);
+            } else if($resCode == "TP0013") {
+                throw new TargetPayException("The transaction could not be processed, Internal Error", 4);
+            } else if($resCode == "TP0014") {
+                throw new TargetPayException("Already used Reeds ingewisseld", 4);
+            } else if($resCode == "TP0020") {
+                throw new TargetPayException("Layoutcode not entered. Geen layoutcode opgegeven", 4);
+            } else if($resCode == "TP0021") {
+                throw new TargetPayException("Tansaction ID not entered. Geen transactie-id opgegeven", 4);
+            } else if($resCode == "TP0022") {
+                throw new TargetPayException("No transaction found with this ID. Geen transactie met dit ID gevonden", 4);
+            } else if($resCode == "TP0023") {
+                throw new TargetPayException("Layoutcode does not match this transaction.", 4);
+            } else {
+                $this->setPaymentDone(false);
+            }
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }

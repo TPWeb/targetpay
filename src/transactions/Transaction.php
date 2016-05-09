@@ -50,11 +50,14 @@ class Transaction {
      */
     public function setAmount($amount)
     {
-        if(is_numeric($amount)) {
-            $this->amount = $amount;
-        } else {
-            throw new AmountException("Amount isn't numeric.", 1);
-        }
+        if(!is_numeric($amount))
+            throw new AmountException('Amount is not numeric', 1);
+        if($this->minAmount > $amount)
+            throw new AmountException('Amount is to low. (Min amount: ' . $this->minAmount . ')', 2);
+        if($this->maxAmount < $amount)
+            throw new AmountException('Amount is to high. (Max amount: ' . $this->maxAmount . ')', 3);
+        $this->amount = $amount;
+        return $this->amount;
     }
 
     /**
