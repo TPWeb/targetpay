@@ -9,7 +9,7 @@
 Require this package in your `composer.json` and update composer.
 
 ```php
-"tpweb/targetpay": "~1.0.0"
+"tpweb/targetpay": "~1.*"
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `config/app.php`
@@ -30,7 +30,7 @@ To publish the config settings in Laravel 5 use:
 php artisan vendor:publish --provider="TPWeb\TargetPay\TargetPayServiceProvider"
 ```
 
-This will add an `targetpay.php` config file to your config folder. In your .env file you can use:
+This will add a `targetpay.php` config file to your config folder. In your .env file you can use:
 ```php
 TARGETPAY_LAYOUTCODE=xxxxx
 TARGETPAY_KLANTCODE=xxxxx
@@ -43,7 +43,7 @@ TARGETPAY_DEBUG=true
 ### Get payment info
 ```php
 $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IVR);
-$targetPay->setCountry(32);
+//$targetPay->setCountry(32);
 $targetPay->setCountry(\TPWeb\TargetPay\Transaction\IVR::BELGIUM);
 $targetPay->setAmount(3.00);
 $targetPay->getPaymentInfo(); //Fetch payment info
@@ -56,7 +56,7 @@ echo $targetPay->getMode(); //Call type: PC or PM
 echo ($targetPay->getMode() == "PM" ? $targetPay->getDuration() . "s" : ""); //duration in seconds
 ```
 ### Check payment
-(This will only 1 time give you a successfull callback!)
+(This will only give you a one-time successful callback!)
 ```php
 $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IVR);
 $targetPay->setCountry($request->get('country'));
@@ -78,11 +78,15 @@ Comming soon
 
 
 
-The complete documentation can be found soon at: [http://www.tpweb.org](http://www.tpweb.org)
+The complete documentation can be found at: [http://www.tpweb.org/my-projects/php-targetpay-library/](http://www.tpweb.org/my-projects/php-targetpay-library/)
 
 # Support
 
 Support github or mail: tjebbe.lievens@madeit.be
+
+# Contributing
+
+Please try to follow the psr-2 coding style guide. http://www.php-fig.org/psr/psr-2/
 
 # License
 

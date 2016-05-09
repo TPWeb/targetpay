@@ -11,7 +11,8 @@ namespace TPWeb\TargetPay\Exception;
  * @author     Made I.T. <info@madeit.be>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class IVRException extends \Exception {
+class IVRException extends \Exception
+{
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
