@@ -31,11 +31,18 @@ class TargetPay
      * Construct TargetPay
      * @param  Transaction|null		$transaction
      */
-    function __construct($transaction = null) {
-        $this->setKlantcode(config('targetpay.klantcode'));
-        $this->setLayoutcode(config('targetpay.layoutcode'));
-        $this->setTest(config('targetpay.test'));
-        $this->setDebug(config('targetpay.debug'));
+    function __construct($transaction = null, $config = null) {
+        if($config != null) {
+            $this->setKlantcode($config['klantcode']);
+            $this->setLayoutcode($config['layoutcode']);
+            $this->setTest($config['test']);
+            $this->setDebug($config['debug']);
+        } else {
+            $this->setKlantcode(config('targetpay.klantcode'));
+            $this->setLayoutcode(config('targetpay.layoutcode'));
+            $this->setTest(config('targetpay.test'));
+            $this->setDebug(config('targetpay.debug'));
+        }
 
         if($transaction != null) {
             $this->setTransaction($transaction);

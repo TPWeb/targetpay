@@ -1,7 +1,7 @@
 # PHP TargetPay Library
-[![Total Downloads](https://poser.pugx.org/tpweb/targetpay/d/total.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![Latest Stable Version](https://poser.pugx.org/tpweb/targetpay/v/stable.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![Latest Unstable Version](https://poser.pugx.org/tpweb/targetpay/v/unstable.svg)](https://packagist.org/packages/tpweb/targetpay)
+[![Total Downloads](https://poser.pugx.org/tpweb/targetpay/d/total.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![License](https://poser.pugx.org/tpweb/targetpay/license.svg)](https://packagist.org/packages/tpweb/targetpay)
 
 #Installation
