@@ -76,8 +76,26 @@ if($targetPay->getPaymentDone()) {
 ```
 
 ## IDEAL
-Comming soon
+### Get payment info & url
+Save $transactionId, redirect user to $redirectUrl.
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal);
+$targetPay->transaction->setBank(IDeal::ING);
+$targetPay->setAmount(10.00);
+$targetPay->transaction->setDescription("Description");
+$targetPay->transaction->setReturnUrl("https://www.example.com");
+$targetPay->getPaymentInfo();
+$redirectUrl = $targetPay->transaction->getIdealUrl();
+$transactionId = $targetPay->transaction->getTransactionId();
+```
 
+### Check payment 
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal);
+$targetPay->checkPaymentInfo();
+$once = false;
+$targetPay->getPaymentDone($once);
+```    
 
 
 The complete documentation can be found at: [http://www.tpweb.org/my-projects/php-targetpay-library/](http://www.tpweb.org/my-projects/php-targetpay-library/)

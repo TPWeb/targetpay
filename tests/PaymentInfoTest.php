@@ -110,19 +110,69 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         $targetPay->getPaymentInfo();
     }
     
-    
-    public function testPaymentInfoIDeal()
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoIDealNoDescription()
     {
         $config = $this->config;
-        $config['layoutcode'] = "1030";
+        $config['layoutcode'] = "56445";
         $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
         $targetPay->transaction->setBank(IDeal::ING);
         $targetPay->setAmount(10.00);
         $targetPay->getPaymentInfo();
-        $this->assertEquals("", $targetPay->transaction->getIdealUrl());
-        $this->assertEquals("", $targetPay->transaction->getTransactionId());
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoIDealInvalidReturnUrl()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->getPaymentInfo();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoIDealNotCompleted()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $config['test'] = false;
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
+        $targetPay->getPaymentInfo();
+        $this->assertContains("https://bankieren.ideal.ing.nl/ideal/betalen/inlog-annuleren/static/detect_mob?trxid=", $targetPay->transaction->getIdealUrl());
+        $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
         
         $targetPay->checkPaymentInfo();
         $this->assertEquals(10.00, $targetPay->getAmount());
     }
+    
+    /*public function testPaymentInfoIDealNotCompleted()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $config['test'] = false;
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
+        $targetPay->getPaymentInfo();
+        $this->assertContains("https://bankieren.ideal.ing.nl/ideal/betalen/inlog-annuleren/static/detect_mob?trxid=", $targetPay->transaction->getIdealUrl());
+        $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
+        
+        $targetPay->checkPaymentInfo();
+        $this->assertEquals(10.00, $targetPay->getAmount());
+    }*/
 }

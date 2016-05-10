@@ -225,7 +225,7 @@ class TargetPay
         if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
             $this->checkPaymentInfoIvr();
         } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\IDeal) {
-            $this->checkPaymentInfoIDeal();
+            $this->checkPaymentInfoIDeal($once);
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }
@@ -418,7 +418,7 @@ class TargetPay
     /**
      * Check payment check
      */
-    private function checkPaymentInfoIDeal() {
+    private function checkPaymentInfoIDeal($once) {
         $url = $this->transaction->idealCheckUrl . '?' .
                                 'rtlo='. urlencode($this->layoutcode) .
                                 '&trxid='.urlencode($this->transaction->getTransactionId()) .
