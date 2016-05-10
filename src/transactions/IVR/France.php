@@ -46,7 +46,7 @@ class France extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 135 && $this->getMode() == "PC") {
+        if($this->amountPerAction == 1.35 && $this->getMode() == "PC") {
             $this->amountPerAction = 1.35;
             $this->amount = 1.35;
             $this->payout = 0.90;

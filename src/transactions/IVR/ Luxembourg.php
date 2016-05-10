@@ -46,7 +46,7 @@ class Luxembourg extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 115 && $this->getMode() == "PM") {
+        if($this->amountPerAction == 1.15 && $this->getMode() == "PM") {
             $this->amountPerAction = 1.15;
             $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
             $this->payout = round(0.65 * round($this->amount / $this->amountPerAction), 2); //56%

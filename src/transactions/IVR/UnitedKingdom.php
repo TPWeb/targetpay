@@ -17,7 +17,7 @@ use \TPWeb\TargetPay\Transaction\IVR\Country;
 class UnitedKingdom extends Country {
     protected $name = "United Kingdom";
     protected $code = 44;
-    public $minAmount = 0;
+    public $minAmount = 1.50;
     public $maxAmount = 20;
     public $currency = "GBP";
 
@@ -47,7 +47,7 @@ class UnitedKingdom extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 150 && $this->getMode() == "PM") {
+        if($this->amountPerAction == 1.50 && $this->getMode() == "PM") {
             $this->amountPerAction = 1.50;
             $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
             $this->payout = round(1 * round($this->amount / $this->amountPerAction), 2); //50%

@@ -17,8 +17,8 @@ use \TPWeb\TargetPay\Transaction\IVR\Country;
 class Suisse extends Country {
     protected $name = "Suisse";
     protected $code = 41;
-    public $minAmount = 0;
-    public $maxAmount = 20;
+    public $minAmount = 3.00;
+    public $maxAmount = 42.00;
     public $currency = "CHF";
 
     /**
@@ -47,7 +47,7 @@ class Suisse extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 422 && $this->getMode() == "PM") {
+        if($this->amountPerAction == 4.22 && $this->getMode() == "PM") {
             $this->amountPerAction = 4.22;
             $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
             $this->payout = round(2.14 * round($this->amount / $this->amountPerAction), 2); //50%

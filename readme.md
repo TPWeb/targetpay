@@ -1,4 +1,6 @@
 # PHP TargetPay Library
+[![Build Status](https://travis-ci.org/TPWeb/targetpay.svg?branch=master)](https://travis-ci.org/TPWeb/targetpay)
+[![Coverage Status](https://coveralls.io/repos/github/TPWeb/targetpay/badge.svg?branch=master)](https://coveralls.io/github/TPWeb/targetpay?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/tpweb/targetpay/v/stable.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![Latest Unstable Version](https://poser.pugx.org/tpweb/targetpay/v/unstable.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![Total Downloads](https://poser.pugx.org/tpweb/targetpay/d/total.svg)](https://packagist.org/packages/tpweb/targetpay)
@@ -43,26 +45,26 @@ TARGETPAY_DEBUG=true
 ### Get payment info
 ```php
 $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IVR);
-//$targetPay->setCountry(32);
-$targetPay->setCountry(\TPWeb\TargetPay\Transaction\IVR::BELGIUM);
+//$targetPay->transaction->setCountry(32);
+$targetPay->transaction->setCountry(\TPWeb\TargetPay\Transaction\IVR::BELGIUM);
 $targetPay->setAmount(3.00);
 $targetPay->getPaymentInfo(); //Fetch payment info
 
-echo $targetPay->getCurrency(); //Currency: EURO, GBP, ...
+echo $targetPay->transaction->getCurrency(); //Currency: EURO, GBP, ...
 echo $targetPay->getAmount(); //Real payed amount.: 3.00
-echo $targetPay->getServiceNumber(); //Number to call
-echo $targetPay->getPayCode(); //Code to enter during call
-echo $targetPay->getMode(); //Call type: PC or PM
-echo ($targetPay->getMode() == "PM" ? $targetPay->getDuration() . "s" : ""); //duration in seconds
+echo $targetPay->transaction->getServiceNumber(); //Number to call
+echo $targetPay->transaction->getPayCode(); //Code to enter during call
+echo $targetPay->transaction->getMode(); //Call type: PC or PM
+echo ($targetPay->transaction->getMode() == "PM" ? $targetPay->transaction->getDuration() . "s" : ""); //duration in seconds
 ```
 ### Check payment
 (This will only give you a one-time successful callback!)
 ```php
 $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IVR);
-$targetPay->setCountry($request->get('country'));
+$targetPay->transaction->setCountry($request->get('country'));
 $targetPay->setAmount($request->get('amount'));
-$targetPay->setServiceNumber($request->get('servicenumber'));
-$targetPay->setPayCode($request->get('paycode'));
+$targetPay->transaction->setServiceNumber($request->get('servicenumber'));
+$targetPay->transaction->setPayCode($request->get('paycode'));
 $targetPay->checkPaymentInfo();
 if($targetPay->getPaymentDone()) {
     //Payment done

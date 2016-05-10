@@ -17,7 +17,7 @@ use \TPWeb\TargetPay\Transaction\IVR\Country;
 class Italy extends Country {
     protected $name = "Italia";
     protected $code = 39;
-    public $minAmount = 0;
+    public $minAmount = 0.80;
     public $maxAmount = 20;
 
     /**
@@ -46,7 +46,7 @@ class Italy extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 129 && $this->getMode() == "PM") {
+        if($this->amountPerAction == 1.29 && $this->getMode() == "PM") {
             $this->amountPerAction = 1.29;
             $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
             $this->payout = round(1.65 * round($this->amount / $this->amountPerAction), 2); //50%

@@ -2,6 +2,7 @@
 namespace TPWeb\TargetPay\Transaction\IVR;
 
 use TPWeb\TargetPay\Exception\AmountException;
+use TPWeb\TargetPay\Exception\IVRException;
 
 /**
  *
@@ -140,6 +141,6 @@ class Country {
      */
     public function getPayout()
     {
-        return $this->payout;
+        return round($this->payout, 2);
     }
 }

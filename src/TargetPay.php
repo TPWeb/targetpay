@@ -5,6 +5,7 @@ use Log;
 use TPWeb\TargetPay\Exception\AmountException;
 use TPWeb\TargetPay\Exception\TargetPayException;
 use TPWeb\TargetPay\Exception\TransactionTypeException;
+use TPWeb\TargetPay\Exception\IVRException;
 
 /**
  *
@@ -56,6 +57,8 @@ class TargetPay
     public function setTransaction($transaction)
     {
         if($transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
+            $this->transaction = $transaction;
+        } elseif($transaction instanceof \TPWeb\TargetPay\Transaction\IDeal) {
             $this->transaction = $transaction;
         } else {
             throw new TransactionTypeException('Type not found.', 1);
@@ -199,221 +202,6 @@ class TargetPay
     }
 
     /**
-     * mark payment complete status
-     * @param boolean
-     */
-    public function setPaymentDone($boolean)
-    {
-        $this->transaction->setPaymentDone($boolean);
-    }
-
-    /**
-     * get payment complete status
-     * @return boolean
-     */
-    public function getPaymentDone()
-    {
-        return $this->transaction->getPaymentDone();
-    }
-
-    /***** IVR specific ******/
-    /**
-     * get list of amounts to use.
-     * @return array|null
-     * @throws TransactionTypeException
-     */
-    public function getAmountList()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getAmountList();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-
-    /**
-     * set country code
-     * @param country
-     * @throws TransactionTypeException
-     */
-    public function setCountry($country)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setCountry($country);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get country code
-     * @return country code
-     * @throws TransactionTypeException
-     */
-    public function getCountry()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getCountry();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * set service phone number
-     * @param phonenumber
-     * @throws TransactionTypeException
-     */
-    public function setServiceNumber($number)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setServiceNumber($number);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get service phone number
-     * @return phonenumber
-     * @throws TransactionTypeException
-     */
-    public function getServiceNumber()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getServiceNumber();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * set service code to enter during call.
-     * @param string $code
-     * @throws TransactionTypeException
-     */
-    public function setPayCode($code)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setPayCode($code);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get service code to enter during call.
-     * @return  string $code
-     * @throws TransactionTypeException
-     */
-    public function getPayCode()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getPayCode();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * set payment mode
-     * @param String $mode
-     */
-    public function setMode($mode)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setMode($mode);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get payment mode
-     * @return String $mode
-     * @throws TransactionTypeException
-     */
-    public function getMode()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getMode();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * set call duration
-     * @param set payment duration
-     * @throws TransactionTypeException
-     */
-    public function setDuration($duration)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setDuration($duration);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get call duration
-     * @return int (seconds)
-     * @throws TransactionTypeException
-     */
-    public function getDuration()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getDuration();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get amount per action, amount pay per minute or amount pay per call
-     * @return numeric
-     * @throws TransactionTypeException
-     */
-    public function getAmountPerAction()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getAmountPerAction();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * set if payment is used for adult only content
-     * @param boolean
-     * @throws TransactionTypeException
-     */
-    public function setAdult($boolean)
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            $this->transaction->setAdult($boolean);
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
-     * get if payment is used for adult only content
-     * @return boolean
-     * @throws TransactionTypeException
-     */
-    public function getAdult()
-    {
-        if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
-            return $this->transaction->getAdult();
-        } else {
-            throw new TransactionTypeException('Type not allowed', 2);
-        }
-    }
-
-    /**
      * get payment info, fetch remote payment info data
      * @throws TransactionTypeException, TargetPayException
      */
@@ -423,32 +211,32 @@ class TargetPay
             $mode = $this->transaction->getMode();
             if($mode == "PM") {
                 $url = 'http://api.targetpay.nl/payment/startpayment.asp?' .
-                                'rtlo='. urlencode($this->layoutcode) .
-                                '&ct='.urlencode($mode) .
+                                'rtlo=' . urlencode($this->layoutcode) .
+                                '&ct=' . urlencode($mode) .
                                 '&co=' . urlencode($this->transaction->country->getCode()) .
-                                '&tb='.urlencode($this->getAmountPerAction() * 100) .
+                                '&tb=' . urlencode($this->transaction->getAmountPerAction() * 100) .
                                 '&cd=' . urlencode($this->transaction->getDuration()) .
-                                '&iphash=' . urlencode($_SERVER['REMOTE_ADDR']) . 
-                                '&adult=' . ($this->getAdult() ? 1 : 0) .
+                                '&iphash=' . urlencode($this->getIp()) . 
+                                '&adult=' . ($this->transaction->getAdult() ? 1 : 0) .
                                 '&test=' . ($this->test ? 1 : 0);
             } else if($mode == "PU") {
                 $url = 'http://api.targetpay.nl/payment/startpayment.asp?' .
-                                'rtlo='. urlencode($this->layoutcode) .
-                                '&ct='.urlencode($mode) .
+                                'rtlo=' . urlencode($this->layoutcode) .
+                                '&ct=' . urlencode($mode) .
                                 '&co=' . urlencode($this->transaction->country->getCode()) . 
-                                '&tb='.urlencode($this->getAmountPerAction() * 100) .
+                                '&tb=' . urlencode($this->transaction->getAmountPerAction() * 100) .
                                 '&cu=' . urlencode($this->url) .
-                                '&iphash=' . urlencode($_SERVER['REMOTE_ADDR']) . 
-                                '&adult=' . ($this->getAdult() ? 1 : 0) .
+                                '&iphash=' . urlencode($this->getIp()) . 
+                                '&adult=' . ($this->transaction->getAdult() ? 1 : 0) .
                                 '&test=' . ($this->test ? 1 : 0);
             } else if($mode == "PC") {
                 $url = 'http://api.targetpay.nl/payment/startpayment.asp?' .
-                                'rtlo='. urlencode($this->layoutcode) .
-                                '&ct='.urlencode($mode) .
+                                'rtlo=' . urlencode($this->layoutcode) .
+                                '&ct=' . urlencode($mode) .
                                 '&co=' . urlencode($this->transaction->country->getCode()) . 
-                                '&tb='.urlencode($this->getAmountPerAction() * 100) .
-                                '&iphash=' . urlencode($_SERVER['REMOTE_ADDR']) . 
-                                '&adult=' . ($this->getAdult() ? 1 : 0) .
+                                '&tb=' . urlencode($this->transaction->getAmountPerAction() * 100) .
+                                '&iphash=' . urlencode($this->getIp()) . 
+                                '&adult=' . ($this->transaction->getAdult() ? 1 : 0) .
                                 '&test=' . ($this->test ? 1 : 0);
             } else {
                 throw new IVRException('Mode not found.', 2);
@@ -562,9 +350,9 @@ class TargetPay
         if($this->transaction instanceof \TPWeb\TargetPay\Transaction\IVR) {
             $url = 'http://api.targetpay.nl/payment/checkpayment.asp?' .
                                     'rtlo='. urlencode($this->layoutcode) .
-                                    '&paycode='.urlencode($this->getPayCode()) .
-                                    '&payline=' . urlencode($this->getServiceNumber()) . 
-                                    '&country='.urlencode($this->getCountry()) .
+                                    '&paycode='.urlencode($this->transaction->getPayCode()) .
+                                    '&payline=' . urlencode($this->transaction->getServiceNumber()) . 
+                                    '&country='.urlencode($this->transaction->getCountry()) .
                                     '&test=' . ($this->test ? 1 : 0);
             $result = $this->getResponse($url);
             if($this->debug) {
@@ -577,13 +365,13 @@ class TargetPay
             $data = explode('|', $result);
             $resCode = substr($data[0], 0, 3);
             if($resCode == "000") {
-                $this->setPaymentDone(true);
-                $this->transaction->country->setAmountPerAction($data[1]);
-                $this->setMode($data[2]);
-                $this->setDuration($data[3]);
+                $this->transaction->setPaymentDone(true);
+                $this->transaction->country->setAmountPerAction($data[1]/100);
+                $this->transaction->setMode($data[2]);
+                $this->transaction->setDuration($data[3]);
                 $this->transaction->calculateAmount();
             } else {
-                $this->setPaymentDone(false);
+                $this->transaction->setPaymentDone(false);
             }	
         } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\IDeal) {
             $url = 'https://www.targetpay.com/ideal/check?' .
@@ -641,5 +429,13 @@ class TargetPay
         $strResponse = curl_exec($ch);
         curl_close($ch);
         return $strResponse;
+    }
+    
+    /**
+     * get user IP
+     * @return ip
+     */
+    private function getIp() {
+        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "101.10.10.02";
     }
 }

@@ -35,6 +35,7 @@ class Austria extends Country {
 
         $this->setMode("PM");
         $this->amountPerAction = 2.16;
+        $this->duration = round(60 * round($amount / 2.16, 2));
         $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
         $this->payout = round(1.15 * round($this->amount / $this->amountPerAction), 2); //53
         return $this->amount;
@@ -45,7 +46,7 @@ class Austria extends Country {
      */
     public function calculateAmount()
     {
-        if($this->amountPerAction == 216 && $this->getMode() == "PM") {
+        if($this->amountPerAction == 2.16 && $this->getMode() == "PM") {
             $this->amountPerAction = 2.16;
             $this->amount = round($this->duration / 60 * $this->amountPerAction, 2);
             $this->payout = round(1.15 * round($this->amount / $this->amountPerAction), 2); //56%

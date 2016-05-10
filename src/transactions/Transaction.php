@@ -66,7 +66,7 @@ class Transaction {
      */
     public function getAmount()
     {
-        $this->amount;
+        return $this->amount;
     }
 
 
@@ -108,7 +108,7 @@ class Transaction {
      */
     public function getCurrency()
     {
-        return $this->country->getCurrency();
+        return $this->currency;
     }
 
     /**
@@ -135,6 +135,6 @@ class Transaction {
      */
     public function getPayout()
     {
-        return null;
+        throw new AmountException('No payout found', 5);
     }
 }

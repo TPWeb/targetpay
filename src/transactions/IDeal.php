@@ -26,9 +26,9 @@ use \TPWeb\TargetPay\Transaction\Transaction;
  */
 class IDeal extends Transaction {
     protected $name = "IDeal";
-    protected $minAmount = 0.84;
-    protected $maxAmount = 10000.00;
     private $transactionKost = 0.70; //Meer dan 10 transacties per dag?: 0.49
+    public $maxAmount = 10000.00;
+    public $minAmount = 0.84;
     public $bank;
     public $amount;
     public $description;
@@ -131,7 +131,7 @@ class IDeal extends Transaction {
      */
     public function getPayout()
     {
-        return $this->amount - $this->transactionKost;
+        return round($this->amount - $this->transactionKost, 2);
     }
 
     /**
