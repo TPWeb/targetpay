@@ -175,4 +175,98 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         $targetPay->checkPaymentInfo();
         $this->assertEquals(10.00, $targetPay->getAmount());
     }*/
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoMisterCashNoLayoutcode()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+    }
+    
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoMisterCashNoIdealAcc()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "1000";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoMisterCashNoDescription()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoMisterCashInvalidReturnUrl()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->getPaymentInfo();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoMisterCashNotCompleted()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $config['test'] = false;
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
+        $targetPay->getPaymentInfo();
+        $this->assertContains("https://www.targetpay.com/mrcash/launch.php5?transactionID=", $targetPay->transaction->getMisterCashUrl());
+        $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
+        
+        $targetPay->checkPaymentInfo();
+        $this->assertEquals(10.00, $targetPay->getAmount());
+    }
+    
+    public function testPaymentInfoMisterCash()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $config['test'] = true;
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash, $config);
+        $targetPay->transaction->setLang("NL");
+        $targetPay->setAmount(10.00);
+        $targetPay->transaction->setDescription("UNIT Testing");
+        $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
+        $targetPay->getPaymentInfo();
+        $this->assertContains("https://www.targetpay.com/mrcash/launch.php5?transactionID=", $targetPay->transaction->getMisterCashUrl());
+        $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
+        
+        $targetPay->checkPaymentInfo();
+        $this->assertTrue($targetPay->transaction->getPaymentDone());
+        $this->assertEquals(10.00, $targetPay->getAmount());
+    }
 }

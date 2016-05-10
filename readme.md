@@ -66,10 +66,10 @@ $targetPay->setAmount($request->get('amount'));
 $targetPay->transaction->setServiceNumber($request->get('servicenumber'));
 $targetPay->transaction->setPayCode($request->get('paycode'));
 $targetPay->checkPaymentInfo();
-if($targetPay->getPaymentDone()) {
+if($targetPay->transaction->getPaymentDone()) {
     //Payment done
     echo $targetPay->getAmount(); //Real payed amount
-    echo targetPay->getPayout(); //amount you 'll receive.
+    echo targetPay->transaction->getPayout(); //amount you 'll receive.
 } else {
     //payment not completed
 }
@@ -92,9 +92,33 @@ $transactionId = $targetPay->transaction->getTransactionId();
 ### Check payment 
 ```php
 $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal);
+$targetPay->transaction->setTransactionId($transactionId);
 $targetPay->checkPaymentInfo();
 $once = false;
-$targetPay->getPaymentDone($once);
+$targetPay->transaction->getPaymentDone($once);
+```    
+
+## Mister Cash
+### Get payment info & url
+Save $transactionId, redirect user to $redirectUrl.
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash);
+$targetPay->transaction->setLang("NL");
+$targetPay->setAmount(10.00);
+$targetPay->transaction->setDescription("Description");
+$targetPay->transaction->setReturnUrl("https://www.example.com");
+$targetPay->getPaymentInfo();
+$redirectUrl = $targetPay->transaction->getMisterCashUrl();
+$transactionId = $targetPay->transaction->getTransactionId();
+```
+
+### Check payment 
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\MisterCash);
+$targetPay->transaction->setTransactionId($transactionId);
+$targetPay->checkPaymentInfo();
+$once = false;
+$targetPay->transaction->getPaymentDone($once);
 ```    
 
 

@@ -1,18 +1,7 @@
 <?php
 namespace TPWeb\TargetPay\Transaction;
 
-use \TPWeb\TargetPay\Exception\IVRException;
 use \TPWeb\TargetPay\Exception\IDealException;
-use \TPWeb\TargetPay\Transaction\IVR\Austria;
-use \TPWeb\TargetPay\Transaction\IVR\Belgium;
-use \TPWeb\TargetPay\Transaction\IVR\Country;
-use \TPWeb\TargetPay\Transaction\IVR\France;
-use \TPWeb\TargetPay\Transaction\IVR\Germany;
-use \TPWeb\TargetPay\Transaction\IVR\Italy;
-use \TPWeb\TargetPay\Transaction\IVR\Luxembourg;
-use \TPWeb\TargetPay\Transaction\IVR\Netherland;
-use \TPWeb\TargetPay\Transaction\IVR\Suisse;
-use \TPWeb\TargetPay\Transaction\IVR\UnitedKingdom;
 use \TPWeb\TargetPay\Transaction\Transaction;
 
 /**
