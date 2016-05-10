@@ -2,6 +2,7 @@
 namespace TPWeb\TargetPay\Transaction;
 
 use \TPWeb\TargetPay\Exception\IVRException;
+use \TPWeb\TargetPay\Exception\IDealException;
 use \TPWeb\TargetPay\Transaction\IVR\Austria;
 use \TPWeb\TargetPay\Transaction\IVR\Belgium;
 use \TPWeb\TargetPay\Transaction\IVR\Country;
@@ -29,6 +30,8 @@ class IDeal extends Transaction {
     private $transactionKost = 0.70; //Meer dan 10 transacties per dag?: 0.49
     public $maxAmount = 10000.00;
     public $minAmount = 0.84;
+    public $idealStartUrl = "https://www.targetpay.com/ideal/start";
+    public $idealCheckUrl = "https://www.targetpay.com/ideal/check";
     public $bank;
     public $amount;
     public $description;
@@ -92,25 +95,25 @@ class IDeal extends Transaction {
     public function setBank($bank)
     {
         if($bank instanceof ABN_AMRO || $bank == 'ABNANL2A') {
-            $this->bank = ABN_AMRO;
+            $this->bank = IDeal::ABN_AMRO;
         } else if($bank instanceof ASN_BANK || $bank == 'ASNBNL21') {
-            $this->bank = ASN_BANK;
+            $this->bank = IDeal::ASN_BANK;
         } else if($bank instanceof BUNQ || $bank == 'BUNQNL2A') {
-            $this->bank = BUNQ;
+            $this->bank = IDeal::BUNQ;
         } else if($bank instanceof ING || $bank == 'INGBNL2A') {
-            $this->bank = ING;
+            $this->bank = IDeal::ING;
         } else if($bank instanceof KNAB || $bank == 'KNABNL2H') {
-            $this->bank = KNAB;
+            $this->bank = IDeal::KNAB;
         } else if($bank instanceof RABOBANK || $bank == 'RABONL2U') {
-            $this->bank = RABOBANK;
+            $this->bank = IDeal::RABOBANK;
         } else if($bank instanceof REGIOBANK || $bank == 'RBRBNL21') {
-            $this->bank = REGIOBANK;
+            $this->bank = IDeal::REGIOBANK;
         } else if($bank instanceof SNS_BANK || $bank == 'SNSBNL2A') {
-            $this->bank = SNSBNL2A;
-        } else if($bank instanceof TRIODOS_BANK || $country == 'TRIONL2U') {
-            $this->bank = TRIODOS_BANK;
-        } else if($bank instanceof VAN_LANDSCHOT || $country == 'FVLBNL22') {
-            $this->bank = VAN_LANDSCHOT;
+            $this->bank = IDeal::SNS_BANK;
+        } else if($bank instanceof TRIODOS_BANK || $bank == 'TRIONL2U') {
+            $this->bank = IDeal::TRIODOS_BANK;
+        } else if($bank instanceof VAN_LANDSCHOT || $bank == 'FVLBNL22') {
+            $this->bank = IDeal::VAN_LANDSCHOT;
         } else {
             throw new IDealException('Bank not found', 1);
         }
@@ -120,7 +123,7 @@ class IDeal extends Transaction {
      * get bank 
      * @return $bank
      */
-    public function getBank($bank)
+    public function getBank()
     {
         return $this->bank;
     }

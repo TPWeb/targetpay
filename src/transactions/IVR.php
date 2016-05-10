@@ -30,6 +30,8 @@ class IVR extends Transaction {
     public $serviceNumber;
     public $paycode;
     public $adult = false;
+    public $urlPaymentInfo = "http://api.targetpay.nl/payment/startpayment.asp";
+    public $urlPaymentCheck = "http://api.targetpay.nl/payment/checkpayment.asp";
 
     const BELGIUM = 32;
     const NETHERLAND = 31;

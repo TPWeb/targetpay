@@ -1,5 +1,6 @@
 <?php
 use TPWeb\TargetPay\TargetPay;
+use \TPWeb\TargetPay\Transaction\IDeal;
 use \TPWeb\TargetPay\Transaction\IVR;
 
 class PaymentInfoTest extends \PHPUnit_Framework_TestCase
@@ -9,6 +10,24 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TransactionTypeException
+     */
+    public function testPaymentInfoNoTransactionType()
+    {
+        $targetPay = new TargetPay(null, $this->config);
+        $targetPay->getPaymentInfo();
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TransactionTypeException
+     */
+    public function testCheckPaymentNoTransactionType()
+    {
+        $targetPay = new TargetPay(null, $this->config);
+        $targetPay->checkPaymentInfo();
     }
     
     public function testPaymentInfoPayPerMinute()
@@ -62,5 +81,48 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         
         $targetPay->checkPaymentInfo();
         $this->assertFalse($targetPay->transaction->getPaymentDone());
+    }
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoIDealNoLayoutcode()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+    }
+    
+    
+    /**
+     * @expectedException TPWeb\TargetPay\Exception\TargetPayException
+     */
+    public function testPaymentInfoIDealNoIdealAcc()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "1000";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+    }
+    
+    
+    public function testPaymentInfoIDeal()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "1030";
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
+        $targetPay->transaction->setBank(IDeal::ING);
+        $targetPay->setAmount(10.00);
+        $targetPay->getPaymentInfo();
+        $this->assertEquals("", $targetPay->transaction->getIdealUrl());
+        $this->assertEquals("", $targetPay->transaction->getTransactionId());
+        
+        $targetPay->checkPaymentInfo();
+        $this->assertEquals(10.00, $targetPay->getAmount());
     }
 }
