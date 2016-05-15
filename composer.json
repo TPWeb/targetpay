@@ -1,6 +1,6 @@
 {
   "name": "tpweb/targetpay",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "PHP TargetPay Library",
   "keywords": ["targetpay", "payments", "IVR"],
   "homepage": "http://www.tpweb.org/my-projects/php-targetpay/",
