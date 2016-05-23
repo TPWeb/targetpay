@@ -143,7 +143,7 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
     public function testPaymentInfoIDealNotCompleted()
     {
         $config = $this->config;
-        $config['layoutcode'] = "56445";
+        $config['layoutcode'] = "98013"; //56445";
         $config['test'] = false;
         $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\IDeal, $config);
         $targetPay->transaction->setBank(IDeal::ING);

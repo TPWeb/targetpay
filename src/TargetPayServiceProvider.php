@@ -44,7 +44,7 @@ class TargetPayServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app->bind('TargetPay', 'TPWeb\DomainBox\TargetPay');
+		$this->app->bind('TargetPay', 'TPWeb\TargetPay\TargetPay');
 	}
 
 	/**
