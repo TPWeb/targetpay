@@ -1,8 +1,8 @@
 {
   "name": "tpweb/targetpay",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "PHP TargetPay Library",
-  "keywords": ["targetpay", "payments", "IVR", "IDeal", "Mister cash"],
+  "keywords": ["targetpay", "payments", "IVR", "IDeal", "Mister cash", "paysafecard"],
   "homepage": "http://www.tpweb.org/my-projects/php-targetpay/",
   "type": "library",
   "license": "LGPL",

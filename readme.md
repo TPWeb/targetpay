@@ -121,6 +121,28 @@ $once = false;
 $targetPay->transaction->getPaymentDone($once);
 ```    
 
+## Paysafecard
+### Get payment info & url
+Save $transactionId, redirect user to $redirectUrl.
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\Paysafecard);
+$targetPay->setAmount(10.00);
+$targetPay->transaction->setDescription("Description");
+$targetPay->transaction->setReturnUrl("https://www.example.com");
+$targetPay->getPaymentInfo();
+$redirectUrl = $targetPay->transaction->getPaysafecardUrl();
+$transactionId = $targetPay->transaction->getPaysafecardId();
+//redirect to $redirectUrl
+```
+
+### Check payment 
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\Paysafecard);
+$targetPay->transaction->setTransactionId($transactionId);
+$targetPay->checkPaymentInfo();
+$once = false;
+$targetPay->transaction->getPaymentDone($once);
+```    
 
 The complete documentation can be found at: [http://www.tpweb.org/my-projects/php-targetpay-library/](http://www.tpweb.org/my-projects/php-targetpay-library/)
 

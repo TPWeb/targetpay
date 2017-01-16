@@ -19,7 +19,7 @@ class Paysafecard extends Transaction {
     private $transactionProcent = 15;
     public $maxAmount = 150.00;
     public $minAmount = 0.1;
-    public $psStartUrl = "https://www.targetpay.com/paysafecard/start ";
+    public $psStartUrl = "https://www.targetpay.com/paysafecard/start";
     public $psCheckUrl = "https://www.targetpay.com/paysafecard/check";
     public $amount;
     public $description;
