@@ -62,6 +62,8 @@ class TargetPay
             $this->transaction = $transaction;
         } elseif($transaction instanceof \TPWeb\TargetPay\Transaction\MisterCash) {
             $this->transaction = $transaction;
+        } elseif($transaction instanceof \TPWeb\TargetPay\Transaction\Paysafecard) {
+            $this->transaction = $transaction;
         } else {
             throw new TransactionTypeException('Type not found.', 1);
         }
@@ -215,6 +217,8 @@ class TargetPay
             $this->getPaymentInfoIDeal();
         } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\MisterCash) {
             $this->getPaymentInfoMiserCash();
+        } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\Paysafecard) {
+            $this->getPaymentInfoPaysafecard();
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }
@@ -232,6 +236,8 @@ class TargetPay
             $this->checkPaymentInfoIDeal($once);
         } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\MisterCash) {
             $this->checkPaymentInfoMisterCash($once);
+        } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\Paysafecard) {
+            $this->checkPaymentInfoPaysafecard($once);
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }
@@ -441,6 +447,57 @@ class TargetPay
     }
     
     /**
+     * get MisterCash info
+     */
+    private function getPaymentInfoPaysafecard() {
+        $url = $this->transaction->psStartUrl . '?' .
+                        'rtlo=' . urlencode($this->layoutcode) .
+                        '&description=' . urlencode($this->transaction->getDescription()) .
+                        '&amount=' . urlencode($this->getAmount() * 100) .
+                        '&returnurl=' . urlencode($this->transaction->getReturnUrl()) .
+                        '&reporturl=' . urlencode($this->transaction->getReportUrl()) .
+                        '&userip=' . urlencode($this->getIp()) . 
+                        '&test=' . ($this->test ? 1 : 0);
+        $result = $this->getResponse($url);
+        if($this->debug) {
+            Log::info('TargetPay URL:' . $url);
+            Log::info('TargetPay Response:' . $result);
+        }
+        if (!$result) {
+            throw new TargetPayException("Can't load payment info", 3);
+        }
+
+        $data = explode('|', $result);
+        $resCode = substr($data[0], 0, 6);
+        if($resCode == "000000") {
+            $this->transaction->setPaysafecardUrl($data[1]);
+            $this->transaction->setTransactionId(substr($data[0], 7));
+        } else if($resCode == "TP0001") {
+            throw new TargetPayException("No layoutcode.", 4);
+        } else if($resCode == "TP0002") {
+            throw new TargetPayException("Amount too low.", 4);
+        } else if($resCode == "TP0003") {
+            throw new TargetPayException("Amount too high.", 4);
+        } else if($resCode == "TP0004") {
+            throw new TargetPayException("No or invalid return URL.", 4);
+        } else if($resCode == "TP0006") {
+            throw new TargetPayException("No description. Geen omschrijving meegegeven", 4);
+        } else if($resCode == "TP0007") {
+            throw new TargetPayException("Invalid or no country.", 4);
+        } else if($resCode == "TP0008") {
+            throw new TargetPayException("ountry not supported for Paysafecard", 4);
+        } else if($resCode == "TP0009") {
+            throw new TargetPayException("Invalid or no user IP given ", 4);
+        } else if($resCode == "TP0016") {
+            throw new TargetPayException("Account disabled.", 4);
+        } else if($resCode == "TP9999") {
+            throw new TargetPayException("Forbidden. Your account is blocked from using Paysafecard. Contact TargetPay.", 4);
+        } else {
+            throw new TargetPayException("Can't load payment info, wrong parameters.", 4);
+        }
+    }
+    
+    /**
      * check payment IVR
      */
     private function checkPaymentInfoIvr() {
@@ -543,6 +600,47 @@ class TargetPay
             throw new TargetPayException("The transaction could not be processed, Internal Error", 4);
         } else if($resCode == "TP0014") {
             throw new TargetPayException("Already used Reeds ingewisseld", 4);
+        } else if($resCode == "TP0020") {
+            throw new TargetPayException("Layoutcode not entered. Geen layoutcode opgegeven", 4);
+        } else if($resCode == "TP0021") {
+            throw new TargetPayException("Tansaction ID not entered. Geen transactie-id opgegeven", 4);
+        } else if($resCode == "TP0022") {
+            throw new TargetPayException("No transaction found with this ID. Geen transactie met dit ID gevonden", 4);
+        } else if($resCode == "TP0023") {
+            throw new TargetPayException("Layoutcode does not match this transaction.", 4);
+        } else {
+            $this->transaction->setPaymentDone(false);
+        }
+    }
+    
+    /**
+     * Check payment check
+     */
+    private function checkPaymentInfoPaysafecard($once) {
+        $url = $this->transaction->mcCheckUrl . '?' .
+                                'rtlo='. urlencode($this->layoutcode) .
+                                '&trxid='.urlencode($this->transaction->getTransactionId()) .
+                                '&once=' . urlencode($once ? "1" : 0) .
+                                '&test=' . ($this->test ? 1 : 0);
+        $result = $this->getResponse($url);
+        if($this->debug) {
+            Log::info('TargetPay URL:' . $url);
+            Log::info('TargetPay Response:' . $result);
+        }
+        if (!$result) {
+            throw new TargetPayException("Can't load payment info", 3);
+        }
+        $resCode = substr($result, 0, 6);
+        if($resCode == "000000") {
+            $this->transaction->setPaymentDone(true);
+        } else if($resCode == "TP0010") {
+            throw new TargetPayException("Transaction not finished, try again later.", 4);
+        } else if($resCode == "TP0011") {
+            throw new TargetPayException("Transaction cancelled by user", 4);
+        } else if($resCode == "TP0012") {
+            throw new TargetPayException("Transaction not finished and expired", 4);
+        } else if($resCode == "TP0014") {
+            throw new TargetPayException("Already redeemed at YYYY-MM-DD HH:MM:SS", 4);
         } else if($resCode == "TP0020") {
             throw new TargetPayException("Layoutcode not entered. Geen layoutcode opgegeven", 4);
         } else if($resCode == "TP0021") {
