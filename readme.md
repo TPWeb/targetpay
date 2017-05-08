@@ -144,6 +144,28 @@ $once = false;
 $targetPay->transaction->getPaymentDone($once);
 ```    
 
+## Premium SMS
+### Get payment info & url
+Save $transactionId, redirect user to $redirectUrl.
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\SMS);
+$targetPay->transaction->setCountry(SMS::BELGIUM);
+$targetPay->setAmount(1.00);
+$shortcode = $targetPay->transaction->getShortcode();
+$keyword = $targetPay->transaction->getKeyword();
+//User send keyword to shortcode, user get answer with code
+```
+
+### Check payment 
+```php
+$targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\SMS);
+$targetPay->transaction->setCountry(SMS::BELGIUM);
+$targetPay->setAmount(1.00);
+$targetPay->transaction->setPayCode($code);
+$targetPay->checkPaymentInfo();
+$targetPay->transaction->getPaymentDone();
+```    
+
 The complete documentation can be found at: [http://www.tpweb.org/my-projects/php-targetpay-library/](http://www.tpweb.org/my-projects/php-targetpay-library/)
 
 # Support
