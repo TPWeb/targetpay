@@ -2,6 +2,7 @@
 use TPWeb\TargetPay\TargetPay;
 use \TPWeb\TargetPay\Transaction\IDeal;
 use \TPWeb\TargetPay\Transaction\IVR;
+use \TPWeb\TargetPay\Transaction\SMS;
 
 class PaymentInfoTest extends \PHPUnit_Framework_TestCase
 {
@@ -268,5 +269,23 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         $targetPay->checkPaymentInfo();
         $this->assertTrue($targetPay->transaction->getPaymentDone());
         $this->assertEquals(10.00, $targetPay->getAmount());
+    }
+    
+    
+    public function testPaymentInfoSMS()
+    {
+        $config = $this->config;
+        $config['layoutcode'] = "56445";
+        $config['test'] = true;
+        $targetPay = new TargetPay(new \TPWeb\TargetPay\Transaction\SMS, $config);
+        $targetPay->transaction->setCountry(SMS::BELGIUM);
+        $targetPay->setAmount(2.00);
+        $targetPay->transaction->setPayCode(123);
+        $this->assertEquals("6045", $targetPay->transaction->getShortcode());
+        $this->assertEquals("ORDER", $targetPay->transaction->getKeyword());
+        
+        $targetPay->checkPaymentInfo();
+        $this->assertTrue($targetPay->transaction->getPaymentDone());
+        $this->assertEquals(2.00, $targetPay->getAmount());
     }
 }

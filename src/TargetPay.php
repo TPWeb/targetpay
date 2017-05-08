@@ -64,6 +64,8 @@ class TargetPay
             $this->transaction = $transaction;
         } elseif($transaction instanceof \TPWeb\TargetPay\Transaction\Paysafecard) {
             $this->transaction = $transaction;
+        } elseif($transaction instanceof \TPWeb\TargetPay\Transaction\SMS) {
+            $this->transaction = $transaction;
         } else {
             throw new TransactionTypeException('Type not found.', 1);
         }
@@ -238,6 +240,8 @@ class TargetPay
             $this->checkPaymentInfoMisterCash($once);
         } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\Paysafecard) {
             $this->checkPaymentInfoPaysafecard($once);
+        } elseif($this->transaction instanceof \TPWeb\TargetPay\Transaction\SMS) {
+            $this->checkPaymentInfoSms();
         } else {
             throw new TransactionTypeException('Type not allowed', 2);
         }
@@ -653,4 +657,33 @@ class TargetPay
             $this->transaction->setPaymentDone(false);
         }
     }
+    
+    /**
+     * check payment IVR
+     */
+    private function checkPaymentInfoSms() {
+        $url = $this->transaction->urlPaymentCheck . '?' .
+                                'rtlo='. urlencode($this->layoutcode) .
+                                '&code='.urlencode($this->transaction->getPayCode()) .
+                                '&keyword=' . urlencode($this->transaction->getKeyword()) . 
+                                '&shortcode='.urlencode($this->transaction->getShortcode()) .
+                                '&country=' . urlencode($this->transaction->country->getCode()) .
+                                '&test=' . ($this->test ? 1 : 0);
+        $result = $this->getResponse($url);
+        if($this->debug) {
+            Log::info('TargetPay URL:' . $url);
+            Log::info('TargetPay Response:' . $result);
+        }
+        if (!$result) {
+            throw new TargetPayException("Can't load payment info", 3);
+        }
+        $data = explode(' ', $result);
+        $resCode = substr($data[0], 0, 3);
+        if($resCode == "000") {
+            $this->transaction->setPaymentDone(true);
+        } else {
+            $this->transaction->setPaymentDone(false);
+        }
+    }
+    
 }
