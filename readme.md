@@ -131,7 +131,7 @@ $targetPay->transaction->setDescription("Description");
 $targetPay->transaction->setReturnUrl("https://www.example.com");
 $targetPay->getPaymentInfo();
 $redirectUrl = $targetPay->transaction->getPaysafecardUrl();
-$transactionId = $targetPay->transaction->getPaysafecardId();
+$transactionId = $targetPay->transaction->getTransactionId();
 //redirect to $redirectUrl
 ```
 
