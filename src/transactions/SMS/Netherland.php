@@ -93,7 +93,6 @@ class Netherland extends Country {
                 $this->shortcode = $info[1];
                 $this->amount = $bedrag;
                 $this->payout = $info[2];
-                break;
             }
         }
         return $this->amount;
