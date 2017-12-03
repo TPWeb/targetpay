@@ -22,57 +22,57 @@ class Netherland extends Country {
     public $maxAmount = 6;
     public $arraySelector = true;
     private $listPrijs = array(
-        0.25 => array('BETAAL AA', 3010, 0.01),
-        0.35 => array('BETAAL AB', 3010, 0.03),
-        0.40 => array('BETAAL AC', 3010, 0.10),
-        0.55 => array('BETAAL AD', 3010, 0.18),
-        0.60 => array('BETAAL AE', 3010, 0.21),
-        0.70 => array('BETAAL AF', 3010, 0.27),
-        0.90 => array('BETAAL AG', 3010, 0.38),
-        1.10 => array('BETAAL AH', 3010, 0.48),
-        1.35 => array('BETAAL AI', 3010, 0.48),
-        1.40 => array('BETAAL AJ', 3010, 0.48),
-        1.45 => array('BETAAL AK', 3010, 0.48),
-        1.50 => array('BETAAL AL', 3010, 0.69),
-        1.75 => array('BETAAL AM', 3010, 0.69),
-        1.80 => array('BETAAL AN', 3010, 0.69),
-        1.85 => array('BETAAL AO', 3010, 0.69),
-        1.90 => array('BETAAL AQ', 3010, 0.69),
-        2.00 => array('BETAAL AR', 3010, 0.93),
-        2.05 => array('BETAAL AS', 3010, 0.93),
-        2.10 => array('BETAAL VS', 3010, 0.93),
-        2.20 => array('BETAAL AW', 3010, 0.93),
-        2.40 => array('BETAAL AY', 3010, 0.93),
-        2.60 => array('BETAAL AZ', 3010, 1.19),
-        2.85 => array('BETAAL BA', 3010, 1.19),
-        2.90 => array('BETAAL BB', 3010, 1.19),
-        2.95 => array('BETAAL BC', 3010, 1.19),
-        3.00 => array('BETAAL BD', 3010, 1.45),
-        3.25 => array('BETAAL BE', 3010, 1.45),
-        3.30 => array('BETAAL BF', 3010, 1.45),
-        3.35 => array('BETAAL BG', 3010, 1.45),
-        3.40 => array('BETAAL BH', 3010, 1.45),
-        3.50 => array('BETAAL BI', 3010, 1.84),
-        3.55 => array('BETAAL BJ', 3010, 1.84),
-        3.60 => array('BETAAL BK', 3010, 1.84),
-        3.70 => array('BETAAL BL', 3010, 1.84),
-        3.90 => array('BETAAL BN', 3010, 1.84),
-        4.10 => array('BETAAL BP', 3010, 2.12),
-        4.35 => array('BETAAL BQ', 3010, 2.12),
-        4.40 => array('BETAAL BR', 3010, 2.12),
-        4.45 => array('BETAAL BS', 3010, 2.12),
-        4.50 => array('BETAAL BV', 3010, 2.39),
-        4.75 => array('BETAAL BW', 3010, 2.39),
-        4.80 => array('BETAAL BX', 3010, 2.39),
-        4.85 => array('BETAAL BY', 3010, 2.39),
-        4.90 => array('BETAAL BZ', 3010, 2.39),
-        5.00 => array('BETAAL CA', 3010, 2.66),
-        5.05 => array('BETAAL CB', 3010, 2.66),
-        5.10 => array('BETAAL CC', 3010, 2.66),
-        5.20 => array('BETAAL CD', 3010, 2.66),
-        5.40 => array('BETAAL CF', 3010, 2.66),
-        5.60 => array('BETAAL CG', 3010, 2.94),
-        6.00 => array('BETAAL CH', 3010, 3.15),
+        array(0.25, 'BETAAL AA', 3010, 0.01),
+        array(0.35, 'BETAAL AB', 3010, 0.03),
+        array(0.40, 'BETAAL AC', 3010, 0.10),
+        array(0.55, 'BETAAL AD', 3010, 0.18),
+        array(0.60, 'BETAAL AE', 3010, 0.21),
+        array(0.70, 'BETAAL AF', 3010, 0.27),
+        array(0.90, 'BETAAL AG', 3010, 0.38),
+        array(1.10, 'BETAAL AH', 3010, 0.48),
+        array(1.35, 'BETAAL AI', 3010, 0.48),
+        array(1.40, 'BETAAL AJ', 3010, 0.48),
+        array(1.45, 'BETAAL AK', 3010, 0.48),
+        array(1.50, 'BETAAL AL', 3010, 0.69),
+        array(1.75, 'BETAAL AM', 3010, 0.69),
+        array(1.80, 'BETAAL AN', 3010, 0.69),
+        array(1.85, 'BETAAL AO', 3010, 0.69),
+        array(1.90, 'BETAAL AQ', 3010, 0.69),
+        array(2.00, 'BETAAL AR', 3010, 0.93),
+        array(2.05, 'BETAAL AS', 3010, 0.93),
+        array(2.10, 'BETAAL VS', 3010, 0.93),
+        array(2.20, 'BETAAL AW', 3010, 0.93),
+        array(2.40, 'BETAAL AY', 3010, 0.93),
+        array(2.60, 'BETAAL AZ', 3010, 1.19),
+        array(2.85, 'BETAAL BA', 3010, 1.19),
+        array(2.90, 'BETAAL BB', 3010, 1.19),
+        array(2.95, 'BETAAL BC', 3010, 1.19),
+        array(3.00, 'BETAAL BD', 3010, 1.45),
+        array(3.25, 'BETAAL BE', 3010, 1.45),
+        array(3.30, 'BETAAL BF', 3010, 1.45),
+        array(3.35, 'BETAAL BG', 3010, 1.45),
+        array(3.40, 'BETAAL BH', 3010, 1.45),
+        array(3.50, 'BETAAL BI', 3010, 1.84),
+        array(3.55, 'BETAAL BJ', 3010, 1.84),
+        array(3.60, 'BETAAL BK', 3010, 1.84),
+        array(3.70, 'BETAAL BL', 3010, 1.84),
+        array(3.90, 'BETAAL BN', 3010, 1.84),
+        array(4.10, 'BETAAL BP', 3010, 2.12),
+        array(4.35, 'BETAAL BQ', 3010, 2.12),
+        array(4.40, 'BETAAL BR', 3010, 2.12),
+        array(4.45, 'BETAAL BS', 3010, 2.12),
+        array(4.50, 'BETAAL BV', 3010, 2.39),
+        array(4.75, 'BETAAL BW', 3010, 2.39),
+        array(4.80, 'BETAAL BX', 3010, 2.39),
+        array(4.85, 'BETAAL BY', 3010, 2.39),
+        array(4.90, 'BETAAL BZ', 3010, 2.39),
+        array(5.00, 'BETAAL CA', 3010, 2.66),
+        array(5.05, 'BETAAL CB', 3010, 2.66),
+        array(5.10, 'BETAAL CC', 3010, 2.66),
+        array(5.20, 'BETAAL CD', 3010, 2.66),
+        array(5.40, 'BETAAL CF', 3010, 2.66),
+        array(5.60, 'BETAAL CG', 3010, 2.94),
+        array(6.00, 'BETAAL CH', 3010, 3.15),
     );
 
     /**
@@ -88,12 +88,12 @@ class Netherland extends Country {
             throw new AmountException('Amount is to low. (Min amount: ' . $this->minAmount . ')', 2);
         if($this->maxAmount < $amount)
             throw new AmountException('Amount is to high. (Max amount: ' . $this->maxAmount . ')', 3);
-        foreach($this->listPrijs as $bedrag => $info) {
-            if($bedrag <= $amount) {
-                $this->keyword = $info[0];
-                $this->shortcode = $info[1];
-                $this->amount = $bedrag;
-                $this->payout = $info[2];
+        foreach($this->listPrijs as $info) {
+            if($info[0] <= $amount) {
+                $this->keyword = $info[1];
+                $this->shortcode = $info[2];
+                $this->amount = $info[0];
+                $this->payout = $info[3];
             }
         }
         if($this->amount == null) {
