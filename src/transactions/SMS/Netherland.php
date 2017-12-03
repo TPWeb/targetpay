@@ -83,6 +83,7 @@ class Netherland extends Country {
      */
     public function setAmount($amount)
     {
+        $this->amount = null;
         if($this->minAmount > $amount)
             throw new AmountException('Amount is to low. (Min amount: ' . $this->minAmount . ')', 2);
         if($this->maxAmount < $amount)
@@ -94,6 +95,9 @@ class Netherland extends Country {
                 $this->amount = $bedrag;
                 $this->payout = $info[2];
             }
+        }
+        if($this->amount == null) {
+            throw new AmountException('Amount not found.', 4);
         }
         return $this->amount;
     }
