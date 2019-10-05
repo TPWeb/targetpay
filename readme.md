@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/tpweb/targetpay/d/total.svg)](https://packagist.org/packages/tpweb/targetpay)
 [![License](https://poser.pugx.org/tpweb/targetpay/license.svg)](https://packagist.org/packages/tpweb/targetpay)
 
-#Installation
+# Installation
 
 Require this package in your `composer.json` and update composer.
 
