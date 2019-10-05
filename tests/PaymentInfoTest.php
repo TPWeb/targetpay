@@ -245,7 +245,7 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         $targetPay->transaction->setDescription("UNIT Testing");
         $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
         $targetPay->getPaymentInfo();
-        $this->assertContains("https://www.targetpay.com/mrcash/launch.php5?transactionID=", $targetPay->transaction->getMisterCashUrl());
+        $this->assertContains("https://pay.digiwallet.nl/consumer/bancontact/launch/", $targetPay->transaction->getMisterCashUrl());
         $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
         
         $targetPay->checkPaymentInfo();
