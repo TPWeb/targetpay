@@ -152,7 +152,7 @@ class PaymentInfoTest extends \PHPUnit_Framework_TestCase
         $targetPay->transaction->setDescription("UNIT Testing");
         $targetPay->transaction->setReturnUrl("https://www.tpweb.org");
         $targetPay->getPaymentInfo();
-        $this->assertContains("https://bankieren.ideal.ing.nl/ideal/betalen/inlog-annuleren/static/detect_mob?trxid=", $targetPay->transaction->getIdealUrl());
+        $this->assertContains("https://pay.digiwallet.nl/consumer/ideal/launch/", $targetPay->transaction->getIdealUrl());
         $this->assertTrue($targetPay->transaction->getTransactionId() > 0);
         
         $targetPay->checkPaymentInfo();
