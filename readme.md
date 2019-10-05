@@ -39,6 +39,7 @@ TARGETPAY_KLANTCODE=xxxxx
 TARGETPAY_TEST=false
 TARGETPAY_DEBUG=true
 ```
+(LAYOUTCODE refers to your 'outlet code' which is unique per webstore/website and KLANTCODE refers to your API key which is unique per TP account.)
 
 # Documentation
 ## IVR 090X- (Pay Per Call & Pay Per Minute)
