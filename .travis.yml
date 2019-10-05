@@ -8,7 +8,7 @@ php:
   - nightly
 
 before_install:
-- composer require phpunit/phpunit:4.8.* satooshi/php-coveralls:1.*
+- composer require satooshi/php-coveralls:1.*
 - composer install --dev
  
 script:
