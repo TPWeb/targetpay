@@ -268,7 +268,7 @@ class TargetPay
      * @return ip
      */
     private function getIp() {
-        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "101.10.10.02";
+        return isset($_SERVER['HTTP_CF_CONNECTING_IP']) ? $_SERVER['HTTP_CF_CONNECTING_IP'] : isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "101.10.10.02";
     }
     
     /**
