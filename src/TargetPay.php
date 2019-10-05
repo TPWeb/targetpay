@@ -621,7 +621,7 @@ class TargetPay
      * Check payment check
      */
     private function checkPaymentInfoPaysafecard($once) {
-        $url = $this->transaction->mcCheckUrl . '?' .
+        $url = $this->transaction->psCheckUrl . '?' .
                                 'rtlo='. urlencode($this->layoutcode) .
                                 '&trxid='.urlencode($this->transaction->getTransactionId()) .
                                 '&once=' . urlencode($once ? "1" : 0) .
